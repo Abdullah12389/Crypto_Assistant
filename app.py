@@ -8,7 +8,6 @@ import requests
 import pandas as pd
 from flask import Flask,render_template,jsonify,request
 import plotly.graph_objects as go
-from livereload import Server
 from dotenv import load_dotenv
 from ta.momentum import RSIIndicator
 from ta.trend import MACD, EMAIndicator
@@ -17,7 +16,7 @@ import plotly.io as pio
 import ChatBot as cb
 
 load_dotenv()
-api=os.environ['API_KEY']
+api=os.environ['COIN_GECKO']
 head={
     "x-cg-demo-api-key":api
 }
@@ -64,11 +63,11 @@ input_scaler=joblib.load("models/input_scaler.pkl")
 
 output_scaler=joblib.load("models/ouput_scaler.pkl")
 
-with open("Data/news.json","r") as f:
-    news=json.load(f)
-
 with open("Data/portfolio.json","r") as f:
     portfolio=json.load(f)
+
+with open("Data/news.json","r") as f:
+    news=json.load(f)
 
 def predict_onnx(data):
     ourdata=data.drop(columns=['open_time'])
@@ -204,8 +203,4 @@ def chat():
     response=cb.graph.invoke(inputinvoke)
     return jsonify(response=response['finalanswer'])
 if __name__=="__main__":
-    server=Server(app.wsgi_app)
-    server.watch("templates/*.html")
-    server.serve(open_url_delay=True,port=8000)
-
-
+    app.run()

@@ -5,13 +5,15 @@ numpy
 jsonlib
 requests
 pandas
+scikit-learn
 flask
 plotly
 livereload
 python-dotenv
 ta
+prophet
 langchain
 langgraph
 langchain_community
 langchain_tavily
-uvicorn
+gunicorn
