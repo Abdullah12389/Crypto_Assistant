@@ -6,8 +6,7 @@ import json
 import os
 import requests
 import pandas as pd
-from flask import Flask,render_template,jsonify,Response,request
-from plotly.utils import PlotlyJSONEncoder
+from flask import Flask,render_template,jsonify,request
 import plotly.graph_objects as go
 from livereload import Server
 from dotenv import load_dotenv
@@ -208,3 +207,5 @@ if __name__=="__main__":
     server=Server(app.wsgi_app)
     server.watch("templates/*.html")
     server.serve(open_url_delay=True,port=8000)
+
+

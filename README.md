@@ -1,42 +1,73 @@
- 📊 Crypto RSI & Technical Analysis App
+<h1>📈 Bitcoin Price Predictor & Financial Chat Assistant</h1>
 
-This project is a **crypto analysis platform** designed to track **RSI (Relative Strength Index)** in real-time for top crypto assets. It’s available as both a **web app** and an **Android APK**, allowing users to make informed trading decisions on the go.
+<p>
+This project is an intelligent app that predicts the future price of Bitcoin using deep learning models like <strong>LSTM</strong> and <strong>Facebook Prophet</strong>. It features a real-time chatbot powered by <strong>LangGraph</strong>, giving personalized financial advice and search functionality across a local Bitcoin database and the internet.
+</p>
 
----
+<h2>🚀 Features</h2>
+<ul>
+  <li>🔮 <strong>Bitcoin Price Prediction</strong> using LSTM and Prophet models</li>
+  <li>🤖 <strong>AI Chatbot</strong> for financial advice, news, and Bitcoin questions</li>
+  <li>🌐 <strong>Web Search Integration</strong> for real-time financial data and news</li>
+  <li>📊 <strong>Real-time Bitcoin Graph</strong> using Plotly</li>
+  <li>🔁 <strong>LangGraph-powered Workflow</strong> to manage chatbot logic and data search</li>
+  <li>🖼️ <strong>Visual LangGraph Structure</strong> shown below</li>
+</ul>
 
-## 🚀 Features
+<h2>🧠 Technologies Used</h2>
+<ul>
+  <li><strong>LangGraph</strong> — chatbot logic management</li>
+  <li><strong>LangChain</strong> — LLM integration</li>
+  <li><strong>LSTM</strong> — time-series deep learning model for price forecasting</li>
+  <li><strong>Facebook Prophet</strong> — interpretable time-series forecasting</li>
+  <li><strong>Plotly</strong> — real-time charting</li>
+  <li><strong>Flask HTML CSS JAVASCRIPT</strong> — frontend interface</li>
+  <li><strong>Pandas + Numpy</strong> — data processing</li>
+</ul>
 
-- ✅ **Live RSI Monitoring** (1m, 5m, 1h intervals)
-- 📱 **Android APK** version for mobile access
-- 📊 Real-time data fetched from Binance
-- 🧮 Built-in **automated buy/sell logic** for RSI thresholds
-- 🔄 Regularly updated RSI with server-side calculations
+<h2>📥 Installation</h2>
+<pre><code>git clone https://github.com/yourusername/bitcoin-predictor
+cd bitcoin-predictor
+pip install -r requirements.txt
+</code></pre>
 
----
+<h2>⚙️ How It Works</h2>
+<ol>
+  <li>User inputs a question or query about Bitcoin</li>
+  <li>LangGraph chatbot decides whether to:
+    <ul>
+      <li>Search internet</li>
+      <li>Query Bitcoin DB</li>
+      <li>Fetch financial news</li>
+      <li>Run full prediction pipeline</li>
+    </ul>
+  </li>
+  <li>Prediction is done using LSTM + Prophet</li>
+  <li>Chatbot responds with a result</li>
+  <li>Graph updates in real time</li>
+</ol>
 
-## 🔜 Coming Soon
+<h2>📊 Real-Time Bitcoin Graph</h2>
+<p>
+The GUI shows a live-updating Bitcoin candlestick chart using <strong>Plotly</strong>, updated via WebSocket or polling. It includes:
+</p>
+<ul>
+  <li>Price changes</li>
+  <li>Prediction overlays</li>
+  <li>Volume and RSI indicators (if added)</li>
+</ul>
 
-- 🧠 **Price Prediction Model** (ML-powered forecasting)
-- 📈 **More Technical Indicators** (MACD, EMA, Bollinger Bands)
-- 💹 **Real-Time Charts** for PnL (Profit & Loss) tracking
-- 🧾 **Trade History Analysis** and performance insights
+<h2>🔄 LangGraph Workflow</h2>
+<div>
+  <img src="langgraph_structure.png" alt="LangGraph Structure" width="100%" style="max-width:800px; border: 1px solid #ccc; border-radius: 10px;">
+</div>
 
----
+<h2>✅ Future Improvements</h2>
+<ul>
+  <li>Trading strategy simulations</li>
+  <li>Social media sentiment analysis</li>
+  <li>Telegram/Discord bot version</li>
+</ul>
 
-## 💻 Tech Stack
-
-- **Python**
-- **Kivy** (for Android UI)
-- **Binance API** for live market data and trading
-- **Pandas + TA-Lib/Pandas_TA** for RSI calculation
-- **httpx + asyncio** for efficient API handling
-- **Flask** for web interface
-- **Hugging Face Spaces** for deployment
-
----
-
-## 📦 APK Distribution
-
-The APK is generated from the Kivy application using **Buildozer** and can be installed directly on Android phones. It's designed to reflect live RSI and future market indicators.
-
----
+<h2>📄 License</h2>
+<p>This project is open-source under the MIT License.</p>
