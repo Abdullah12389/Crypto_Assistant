@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+    <title>Trading Analysis</title>
+</head>
+<style>
+    .page{
+        display: flex;
+        flex-direction: row;
+    }
+    .tab1{
+        flex: 0 0 70%;
+        height:100vh;
+        scrollbar-width: none;
+        overflow: auto;
+    }
+    .tab2{
+        flex: 0 0 30%;
+        height:100vh;
+        scrollbar-width: none;
+        border-left: 2px solid gray;
+        overflow: auto;
+    }
+    #news{
+        margin: 20px;
+    }
+    #header{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    #boticon{
+        position:relative;
+        border-radius: 20px;
+        width:100px;
+        height:40px;
+        top:2.5px;
+        border: none;
+        overflow: hidden;
+        z-index: 2;
+        font-weight: bolder;
+        background-color:white;
+        color:#1a1a1a;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    #border{
+        position:absolute;
+        display: flex;
+        z-index: 0;
+        bottom: 5%;
+        right: 5%;
+        align-content: center;
+        justify-content: center;
+        border-radius: 20px;
+        width:105px;
+        height:45px;
+        background:linear-gradient(75deg,blue,red,greenyellow);
+    }
+    #boticon::before{
+        content:"";
+        position: absolute;
+        z-index:-1;
+        top:0;
+        left: -100%;
+        width:100px;
+        height:40px;
+        background:linear-gradient(75deg,blue,red,greenyellow);
+        transition: transform 1.5s ease;
+        transform: translateX(0);
+    }
+    #boticon:hover::before{
+        transform: translateX(100%);
+    }
+    #buy,#sell{
+        width:150px;
+        height:50px;
+        border-radius: 20px;
+    }
+    #buy{
+        background-color: rgb(21, 223, 21);
+    }
+    #sell{
+        background-color: red;
+    }
+    #buttons{
+        display: flex;
+        justify-content: space-around;
+    }
+    #menu{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    #buysell{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        height: 300px;
+        margin:50px;
+        background-color: rgba(70, 57, 96, 0.8);
+        border-radius: 20px;
+        box-shadow: 0 0 20px rgba(113, 78, 161, 0.6);
+    }
+    body{
+        background-color: rgba(57, 57, 96, 0.9);
+    }
+    a{
+        color:#66ccff;
+    }
+    a:hover{
+        color:#ffffff;
+    }
+    h2{
+        color:#c4b5fd;
+        text-align: center;
+    }
+    #description{
+        color:#f0f0f0;
+    }
+    #qty{
+        border:none;
+        background-color: inherit;
+        outline: none;
+        border-bottom: 2px solid black ;
+    }
+    #news{
+        border-radius: 10px;
+        box-shadow:  0 0 20px rgba(113, 78, 161, 0.5);
+        padding: 20px;
+    }
+    #news:hover{
+        box-shadow:  0 0 20px rgba(113, 64, 180, 0.8);
+    }
+    .livechart{
+        border-radius: 20px;
+        overflow: hidden;
+        margin:10px;
+    }
+    h3{
+        color:#f0f0f0;
+    }
+    #chatbot{
+        display: none;
+        flex-direction: column;
+        bottom:20%;
+        top:20%;
+        left:20%;
+        right:20%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position:fixed;
+        border-radius: 20px;
+        background-color: black;
+        color:greenyellow;
+        box-shadow: 0 0 20px rgb(240, 185, 252);
+ 
+    }
+    #X{
+        position: absolute;
+        top:0px;
+        right:20px;
+    }
+    #X:hover{
+        border: 1px solid white;
+    }
+    #chatheading{
+        position: absolute;
+        top:30px;
+    }
+    #textbox{
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        right:0px;
+    }
+    #inp{
+        width: 82%;
+        height: 30px;
+        border-radius: 20px;
+        padding: 7px;
+        font-size: xx-large;
+    }
+    #send{
+        border: 20px;
+        background-color: rgb(34, 191, 26);
+        border: 2px solid rgb(47, 166, 43);
+        color: black;
+        font-size: xx-large;
+        border-radius: 20px;
+    }
+    #send:active{
+        background-color: rgb(158, 255, 149);
+    }
+    .question,.response{
+        border-radius: 20px;
+        background-color: navy;
+        padding:20px;
+        display: inline-block;
+    }
+    .question{
+        align-self: flex-start;
+    }
+    .response{
+        align-self: flex-end;
+    }
+    #qapair{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        padding: 20px;
+        overflow-y: auto;
+        max-height: 50%;
+        box-sizing: border-box;
+    }
+</style>
+<body>
+    <div class="bottom_page">
+    <div class="page">
+        <div class="tab1">
+            <h2>Live Price</h2>
+            <div class="livechart" id="stock_hourly_price">{{chart | safe}}</div>
+            <h2>20 Days Predicion</h2>
+            <div class="livechart" id="next20days">{{pred20 | safe}}</div>
+            <div class="portfolio">
+                <div id="buysell">
+                    <h2>Buy Sell</h2>
+                    <h3>Balance:{{amount}}</h3>
+                    <h3>Coins:{{qty}}</h3>
+                    <input type="text" id="qty" placeholder="Amount" style="margin-bottom:10px;color:white;">
+                    <div id="buttons">
+                        <button id="buy">Buy</button>
+                        <button id="sell">Sell</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab2">
+            <h2>News</h2>
+            {% for news in newsset %}
+            <div id="news">
+                <a href="{{newsset[news]['url']}}">{{newsset[news]['title']}}</a>
+                <div id="description">{{newsset[news]['snippet']}}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+   <div id="border">
+        <button id="boticon">Chat AI </button>
+   </div>
+    </div>
+    <div id="chatbot">
+        <h2 id="X">X</h2>
+        <h1 id="chatheading">Hey Chat</h1>
+        <div id="qapair">
+        </div>
+        <div id="textbox">
+            <div>
+                <input type="radio" name="chattype" value="doc">Document
+                <input type="radio" name="chattype" value="news">Search
+            </div>
+            <input type="text" placeholder="Chat..." id="inp" autocomplete="off">
+            <button id="send" onclick="sendchat()">>>></button>
+        </div>
+    </div>
+
+    <script>
+        function fetchnew(){
+            fetch("/update_chart")
+                .then(res=>res.json())
+                .then(data=>{
+                    Plotly,expandTraces("stock_hourly_price",{
+                        x:[data.x[0],data.x[1],data.x[2]],
+                        open:data.open[0],
+                        high:data.high[0],
+                        low:data.low[0],
+                        close:data.close[0],
+                        y:[data.y[0],data.y[1]]
+                    }
+                    ,{displayModeBar:false})
+                });
+        }
+        let icon=document.querySelector("#boticon")
+
+        let bottompage=document.querySelector(".bottom_page")
+
+        let bot=document.querySelector("#chatbot")
+
+        icon.addEventListener("click",()=>{       
+            bottompage.style.opacity=0.2
+            chatbot.style.display="flex"
+        })
+
+        let cancel=document.querySelector("#X")
+
+        cancel.addEventListener("click",()=>{
+            bottompage.style.opacity=1
+            chatbot.style.display="none"
+        })
+        let inputfield=document.getElementById("inp")
+        let buton=document.getElementById("send")
+        buton.disabled=true;
+        buton.style.backgroundColor="grey"
+        inputfield.addEventListener('input',()=>{
+            if(inputfield.value.trim() !== ""){
+                buton.style.backgroundColor="rgb(34, 191, 26)"
+                buton.disabled=false
+            } else{
+                buton.style.backgroundColor="grey"
+                buton.disabled=true
+            }
+        })
+
+        function sendchat(){
+            let container=document.getElementById("qapair")
+            const qus=document.createElement("div")
+            const ans=document.createElement("div")
+            let text=inputfield.value
+            qus.className="question"
+            qus.innerHTML=text
+            container.appendChild(qus)
+            inputfield.value=""
+            fetch('/get_response',{
+                method:"POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body:JSON.stringify({text})
+            }).then(res=>res.json()).then(data=>{
+                ans.innerHTML=data.response
+                ans.className="response"
+                container.appendChild(ans)
+            })
+        }
+        setInterval(fetchnew,60*60*1000)
+    </script>
+</body>
+</html>

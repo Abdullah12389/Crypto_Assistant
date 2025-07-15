@@ -1,0 +1,5 @@
+pandas
+python-binance
+flask
+ta
+pandas_ta
